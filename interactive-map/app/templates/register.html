@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Register - GeoMapper{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card glass-card">
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Join our mapping community</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('auth.register') }}" class="auth-form">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    {{ form.username(class="form-control", placeholder="Choose a username") }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    {{ form.email(class="form-control", placeholder="Your email address") }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    {{ form.password(class="form-control", placeholder="Create a password") }}
+                </div>
+                <div class="password-strength">
+                    <div class="strength-bar"></div>
+                    <div class="strength-bar"></div>
+                    <div class="strength-bar"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    {{ form.confirm_password(class="form-control", placeholder="Repeat your password") }}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a></p>
+            </div>
+        </form>
+    </div>
+    
+    <div class="auth-hero">
+        <div class="hero-content">
+            <h1>Start Mapping</h1>
+            <p>Create custom maps with your personal landmarks and routes</p>
+            <img src="{{ url_for('static', filename='images/map-hero-2.png') }}" alt="Map Illustration">
+        </div>
+    </div>
+</div>
+
+<style>
+    .password-strength {
+        display: flex;
+        gap: 5px;
+        margin-top: 8px;
+    }
+    
+    .strength-bar {
+        height: 4px;
+        flex: 1;
+        background: #e9ecef;
+        border-radius: 2px;
+    }
+</style>
+
+<script>
+    document.getElementById('password').addEventListener('input', function(e) {
+        const strengthBars = document.querySelectorAll('.strength-bar');
+        const password = e.target.value;
+        
+        // Reset all bars
+        strengthBars.forEach(bar => {
+            bar.style.background = '#e9ecef';
+        });
+        
+        // Very weak
+        if (password.length > 0) {
+            strengthBars[0].style.background = '#ff6b6b';
+        }
+        
+        // Weak
+        if (password.length >= 6) {
+            strengthBars[1].style.background = '#ffd166';
+        }
+        
+        // Strong
+        if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+            strengthBars[2].style.background = '#06d6a0';
+        }
+    });
+</script>
+{% endblock %}
