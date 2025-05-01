@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - GeoMapper{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-shield-alt"></i> Admin Dashboard</h1>
+        <p>Manage users, landmarks, and system settings</p>
+    </div>
+    
+    <div class="admin-stats">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ user_count }}</h3>
+                <p>Total Users</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ landmark_count }}</h3>
+                <p>Landmarks</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-route"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ route_count }}</h3>
+                <p>Routes</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ new_users_7d }}</h3>
+                <p>New Users (7d)</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="admin-tabs">
+        <ul class="nav-tabs">
+            <li class="active" data-tab="users">Users</li>
+            <li data-tab="landmarks">Landmarks</li>
+            <li data-tab="routes">Routes</li>
+            <li data-tab="settings">Settings</li>
+        </ul>
+        
+        <div class="tab-content active" id="users-tab">
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user._id }}</td>
+                            <td>
+                                <div class="user-cell">
+                                    <img src="{{ url_for('static', filename='images/avatars/' + user.username + '.jpg') }}" 
+                                         onerror="this.src='{{ url_for('static', filename='images/avatars/default.jpg') }}'"
+                                         class="user-avatar">
+                                    {{ user.username }}
+                                </div>
+                            </td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <span class="role-badge {{ user.role }}">{{ user.role }}</span>
+                            </td>
+                            <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-edit" data-user-id="{{ user._id }}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    {% if user.username != current_user.username %}
+                                    <button class="btn btn-sm btn-danger" data-user-id="{{ user._id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="table-actions">
+                <button class="btn btn-primary" id="add-user-btn">
+                    <i class="fas fa-plus"></i> Add User
+                </button>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="landmarks-tab">
+            <!-- Landmarks management content -->
+        </div>
+        
+        <div class="tab-content" id="routes-tab">
+            <!-- Routes management content -->
+        </div>
+        
+        <div class="tab-content" id="settings-tab">
+            <!-- System settings content -->
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
