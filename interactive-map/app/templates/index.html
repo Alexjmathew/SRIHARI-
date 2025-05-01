@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="map-container">
+  <!-- Main Map -->
+  <div id="map"></div>
+  
+  <!-- Floating Control Panel -->
+  <div class="control-panel glass-card fade-in">
+    <div class="panel-header">
+      <h3>Map Controls</h3>
+      <button class="btn btn-icon collapse-panel">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    </div>
+    
+    <div class="panel-body">
+      <div class="tool-selection">
+        <button id="add-landmark" class="btn btn-primary">
+          <i class="fas fa-map-marker-alt"></i> Add Landmark
+        </button>
+        <button id="add-route" class="btn btn-secondary">
+          <i class="fas fa-route"></i> Create Route
+        </button>
+      </div>
+      
+      <div class="search-box">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search landmarks...">
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+      
+      <div class="landmark-list">
+        <h4>Recent Landmarks</h4>
+        <div class="list-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- User Profile Quick View -->
+  <div class="user-profile glass-card">
+    <div class="avatar">
+      <img src="{{ url_for('static', filename='images/default-avatar.jpg') }}" alt="User">
+    </div>
+    <div class="user-info">
+      <h5>{{ current_user.username }}</h5>
+      <p>{{ current_user.role|capitalize }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modern Modal for Landmark Creation -->
+<div class="modal" id="landmarkModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Create New Landmark</h3>
+        <button type="button" class="btn-close" data-dismiss="modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="landmarkForm">
+          <div class="form-group">
+            <label class="form-label">Landmark Name</label>
+            <input type="text" class="form-control" id="landmarkName" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" id="landmarkDescription" rows="3"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <div class="coordinates-display">
+              <div class="coord-input">
+                <span>Latitude</span>
+                <input type="text" class="form-control" id="landmarkLat" readonly>
+              </div>
+              <div class="coord-input">
+                <span>Longitude</span>
+                <input type="text" class="form-control" id="landmarkLng" readonly>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Landmark Type</label>
+            <select class="form-control" id="landmarkType">
+              <option value="point">Point of Interest</option>
+              <option value="building">Building</option>
+              <option value="nature">Natural Feature</option
