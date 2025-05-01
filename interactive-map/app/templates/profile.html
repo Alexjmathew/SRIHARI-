@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - GeoMapper{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="{{ url_for('static', filename='images/avatars/' + current_user.username + '.jpg') }}" 
+                 onerror="this.src='{{ url_for('static', filename='images/avatars/default.jpg') }}'"
+                 alt="{{ current_user.username }}">
+            <button class="avatar-upload-btn">
+                <i class="fas fa-camera"></i>
+            </button>
+        </div>
+        
+        <div class="profile-info">
+            <h1>{{ current_user.username }}</h1>
+            <p class="user-role">{{ current_user.role|capitalize }} User</p>
+            <p class="member-since">Member since {{ current_user.created_at.strftime('%B %Y') }}</p>
+        </div>
+    </div>
+    
+    <div class="profile-content">
+        <div class="profile-sidebar">
+            <ul class="profile-menu">
+                <li class="active" data-tab="overview">Overview</li>
+                <li data-tab="landmarks">My Landmarks</li>
+                <li data-tab="routes">My Routes</li>
+                <li data-tab="settings">Settings</li>
+            </ul>
+        </div>
+        
+        <div class="profile-main">
+            <div class="tab-content active" id="overview-tab">
+                <div class="activity-stats">
+                    <div class="stat-card">
+                        <h3>{{ user_landmarks_count }}</h3>
+                        <p>Landmarks Created</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>{{ user_routes_count }}</h3>
+                        <p>Routes Created</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>{{ last_login }}</h3>
+                        <p>Last Login</p>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                   
