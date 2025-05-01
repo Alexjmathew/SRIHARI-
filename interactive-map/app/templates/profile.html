@@ -54,4 +54,92 @@
                 
                 <div class="recent-activity">
                     <h3>Recent Activity</h3>
-                   
+                    <ul class="activity-list">
+                        {% for activity in recent_activities %}
+                        <li>
+                            <div class="activity-icon">
+                                {% if activity.type == 'landmark' %}
+                                <i class="fas fa-map-marker-alt"></i>
+                                {% else %}
+                                <i class="fas fa-route"></i>
+                                {% endif %}
+                            </div>
+                            <div class="activity-details">
+                                <p>{{ activity.message }}</p>
+                                <small>{{ activity.timestamp }}</small>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="landmarks-tab">
+                <h3>My Landmarks</h3>
+                <div class="landmarks-grid">
+                    {% for landmark in user_landmarks %}
+                    <div class="landmark-card">
+                        <div class="landmark-image">
+                            <img src="{{ landmark.image_url or url_for('static', filename='images/default-landmark.jpg') }}" 
+                                 alt="{{ landmark.name }}">
+                        </div>
+                        <div class="landmark-info">
+                            <h4>{{ landmark.name }}</h4>
+                            <p>{{ landmark.description|truncate(100) }}</p>
+                            <div class="landmark-meta">
+                                <span class="landmark-type">{{ landmark.type }}</span>
+                                <span class="landmark-date">{{ landmark.created_at.strftime('%b %d, %Y') }}</span>
+                            </div>
+                            <div class="landmark-actions">
+                                <button class="btn btn-sm btn-primary" 
+                                        onclick="window.location.href='{{ url_for('map.landmark_detail', id=landmark._id) }}'">
+                                    View
+                                </button>
+                                <button class="btn btn-sm btn-secondary edit-landmark" 
+                                        data-landmark-id="{{ landmark._id }}">
+                                    Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger delete-landmark" 
+                                        data-landmark-id="{{ landmark._id }}">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tab-content" id="routes-tab">
+                <h3>My Routes</h3>
+                <!-- Routes content -->
+            </div>
+            
+            <div class="tab-content" id="settings-tab">
+                <h3>Account Settings</h3>
+                <form class="settings-form">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" value="{{ current_user.username }}" disabled>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="{{ current_user.email }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Change Password</label>
+                        <input type="password" placeholder="New password">
+                        <input type="password" placeholder="Confirm new password">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}
